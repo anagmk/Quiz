@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Quiz</title>
+</head>
+<body>
+
+    <video id="videoPlayer" width="400" controls>
+        <source id="videoSource" src="10001-00.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <h2 id="question">What is 2 + 2?</h2>
+    
+    <div id="options">
+        <button onclick="checkAnswer(0)">3</button>
+        <button onclick="checkAnswer(1)">4</button> <!-- Correct Answer -->
+        <button onclick="checkAnswer(2)">5</button>
+        <button onclick="checkAnswer(3)">6</button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                video: "video1.mp4",
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                correctIndex: 1
+            },
+            {
+                video: "video2.mp4",
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Rome"],
+                correctIndex: 2
+            },
+            {
+                video: "video3.mp4",
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                correctIndex: 1
+            }
+        ];
+        
+        let currentIndex = 0;
+
+        function checkAnswer(selectedIndex) {
+            if (selectedIndex === quizData[currentIndex].correctIndex) {
+                nextQuestion();
+            } else {
+                alert("Wrong Answer! Try again.");
+            }
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+
+            if (currentIndex >= quizData.length) {
+                alert("Quiz Completed!");
+                return;
+            }
+
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoSource = document.getElementById("videoSource");
+            const questionText = document.getElementById("question");
+            const optionsContainer = document.getElementById("options");
+
+            // Update video source
+            videoSource.src = quizData[currentIndex].video;
+            videoPlayer.load();
+
+            // Update question
+            questionText.textContent = quizData[currentIndex].question;
+
+            // Update options
+            optionsContainer.innerHTML = "";
+            quizData[currentIndex].options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+    </script>
+
+</body>
+</html>
